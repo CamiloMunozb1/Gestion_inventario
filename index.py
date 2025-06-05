@@ -1,6 +1,6 @@
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
 
-ruta_db = r"C:\Users\POWER\inventario_base.db"
+ruta_db = r"tU_DATA_BASE"
 conexion = IngresoDB(ruta_db)
 
 while True:
