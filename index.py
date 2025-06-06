@@ -1,6 +1,6 @@
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
 
-ruta_db = r"tU_DATA_BASE"
+ruta_db = r"TU_RUTA_BASE_DB"
 conexion = IngresoDB(ruta_db)
 
 while True:
