@@ -1,6 +1,7 @@
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
+from funcionalidad.modificacion_elemento import IngresoDB,CambiosElementos
 
-ruta_db = r"TU_RUTA_BASE_DB"
+ruta_db = r"TU_RUTA_DV"
 conexion = IngresoDB(ruta_db)
 
 while True:
@@ -20,7 +21,8 @@ while True:
             productos = IngresoProductos(conexion)
             productos.ingresos_productos()
         elif usuario == "2":
-            print("Proxima funcion.")
+            modificacion = CambiosElementos(conexion)
+            modificacion.eleccion_usuario()
         elif usuario == "3":
             print("Proxima funcion.")
         elif usuario == "4":

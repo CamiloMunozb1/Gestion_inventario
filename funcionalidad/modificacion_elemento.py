@@ -16,18 +16,17 @@ class IngresoDB:
 class CambiosElementos:
     def __init__(self,conexion):
         self.conexion = conexion
-        self.opciones_usuario()
-
-    def opciones_usuario(self):
         self.opciones = {
-            "1" : self.opcion_uno,
+            "1" : self.modificar_nombre,
             "2" : self.opcion_dos,
             "3" : self.opcion_tres,
             "4" : self.opcion_cuatro,
             "5" : self.opcion_cinco,
             "6" : self.opcion_seis
         }
-    
+        self.mostar_opciones()
+        self.eleccion_usuario()
+
     def mostar_opciones(self):
         print("""
             Que elemento desea cambiar:
@@ -42,7 +41,6 @@ class CambiosElementos:
     def eleccion_usuario(self):
         try:
             while True:
-                self.mostar_opciones()
                 usuario = str(input("Ingresa la opcion que desees: ")).strip()
                 if not usuario:
                     print("El campo debe estar completo.")
@@ -56,3 +54,28 @@ class CambiosElementos:
                     print("Escoge una opcion entre 1 al 6.")
         except ValueError:
             print("Error de digitacion, volver a intentar.")
+    
+    def modificar_nombre(self):
+        try:
+            nombre_usado = str(input("Ingresa el nombre del producto que quieres cambiar: ")).strip()
+            nombre_producto = str(input("Ingresa el nuevo nombre del producto: ")).strip()
+            if not nombre_usado or not nombre_producto:
+                print("El campo debe estar completo.")
+                return
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ?",(nombre_producto,))
+            if self.conexion.cursor.fetchone():
+                print("El nuevo nombre ya existe. Por favor, ingresa uno diferente.")
+                return
+            self.conexion.cursor.execute("UPDATE productos SET nombre_producto = ? WHERE nombre_producto = ?",(nombre_producto, nombre_usado))
+            if self.conexion.cursor.rowcount == 0:
+                print("No se encontró un producto con ese nombre actual.")
+            else:
+                self.conexion.conn.commit()
+                print("Nombre del producto modificado correctamente.")
+        except Exception as error:
+            print(f"Error en el programa : {error}.")
+        except sqlite3.Error as error:
+            print(f"Error en la base de datos : {error}.")
+    
+    
+
