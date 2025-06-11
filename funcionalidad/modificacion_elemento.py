@@ -18,11 +18,8 @@ class CambiosElementos:
         self.conexion = conexion
         self.opciones = {
             "1" : self.modificar_nombre,
-            "2" : self.opcion_dos,
-            "3" : self.opcion_tres,
-            "4" : self.opcion_cuatro,
-            "5" : self.opcion_cinco,
-            "6" : self.opcion_seis
+            "2" : self.modificar_cantidad,
+            "3" : self.modificar_proovedor,
         }
         self.mostar_opciones()
         self.eleccion_usuario()
@@ -76,6 +73,53 @@ class CambiosElementos:
             print(f"Error en el programa : {error}.")
         except sqlite3.Error as error:
             print(f"Error en la base de datos : {error}.")
+    
+    def modificar_cantidad(self):
+        try:
+            cantidad_actual = int(input("Ingresa la cantidad ingresada previamente: "))
+            cantidad_producto = int(input("Ingresa la cantidad nueva: "))
+            if not cantidad_actual or not cantidad_producto:
+                print("Los campos deben estar completos.")
+                return
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE cantidad_producto = ?",(cantidad_producto,))
+            if self.conexion.cursor.fetchone():
+                print("La cantidad del producto ya existe en el campo seleccionado. Por favor, ingresar uno diferente.")
+                return
+            self.conexion.cursor.execute("UPDATE productos SET cantidad_producto = ? WHERE cantidad_producto = ?",(cantidad_producto,cantidad_actual))
+            if self.conexion.cursor.rowcount == 0:
+                print("No se encontro la cantidad del producto actual.")
+                return
+            else:
+                self.conexion.conn.commit()
+                print("Cantidad del producto modificada exitosamente.")
+        except Exception as error:
+            print(f"Error en el programa : {error}.")
+        except sqlite3.Error as error:
+            print(f"Error en la base de datos : {error}.")
+    
+    def modificar_proovedor(self):
+        try:
+            proovedor_actual = str(input("Ingresa el nombre del proovedor ingresada preeviamente: ")).strip()
+            nombre_proovedor = str(input("Ingresa el nombre del proovedor: ")).strip()
+            if not proovedor_actual or not nombre_proovedor:
+                print("Los campos deben estar completos.")
+                return
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_proovedor = ?",(nombre_proovedor,))
+            if self.conexion.cursor.fetchone():
+                print("El nombre del proovedor ya existe en el campo seleccionado. Por favor, ingresar uno diferente.")
+                return
+            self.conexion.cursor.execute("UPDATE productos SET nombre_proovedor = ? WHERE nombre_proovedor = ?",(nombre_proovedor,proovedor_actual))
+            if self.conexion.cursor.rowcount == 0:
+                print("No se encontro el nombre del proovedor.")
+                return
+            else:
+                self.conexion.conn.commit()
+                print("Nombre del proovedor del producto modificado exitosamente.")
+        except Exception as error:
+            print(f"Error en el programa : {error}.")
+        except sqlite3.Error as error:
+            print(f"Error en la base de datos : {error}.")
+
     
     
 

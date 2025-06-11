@@ -1,7 +1,7 @@
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
 from funcionalidad.modificacion_elemento import IngresoDB,CambiosElementos
 
-ruta_db = r"TU_RUTA_DV"
+ruta_db = r"TU_BASE_DATOS"
 conexion = IngresoDB(ruta_db)
 
 while True:
