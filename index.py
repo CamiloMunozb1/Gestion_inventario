@@ -1,15 +1,16 @@
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
 from funcionalidad.modificacion_elemento import IngresoDB,CambiosElementos
 
-ruta_db = r"TU_BASE_DATOS"
+ruta_db = r"TU_BASE_DB"
 conexion = IngresoDB(ruta_db)
 
 while True:
     print("""
         Bienvenido al gestor de inventario:
             1. Ingreso de inventario.
-            2. Eliminar o modificar un articulo.
+            2. Modificar un articulo.
             3. Ver inventario ingresado.
+            5. Eliminar productos.
             4. Salir
         """)
     try:

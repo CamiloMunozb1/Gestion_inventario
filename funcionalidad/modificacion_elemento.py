@@ -20,6 +20,9 @@ class CambiosElementos:
             "1" : self.modificar_nombre,
             "2" : self.modificar_cantidad,
             "3" : self.modificar_proovedor,
+            "4" : self.modificar_monto,
+            "5" : self.modificar_fecha,
+            "6" : self.salir_programa
         }
         self.mostar_opciones()
         self.eleccion_usuario()
@@ -76,22 +79,27 @@ class CambiosElementos:
     
     def modificar_cantidad(self):
         try:
+            nombre_producto = str(input("Ingresa el nombre del producto : ")).strip()
             cantidad_actual = int(input("Ingresa la cantidad ingresada previamente: "))
             cantidad_producto = int(input("Ingresa la cantidad nueva: "))
-            if not cantidad_actual or not cantidad_producto:
+
+            if not all([nombre_producto,cantidad_actual,cantidad_producto]):
                 print("Los campos deben estar completos.")
                 return
-            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE cantidad_producto = ?",(cantidad_producto,))
-            if self.conexion.cursor.fetchone():
-                print("La cantidad del producto ya existe en el campo seleccionado. Por favor, ingresar uno diferente.")
+
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ? AND cantidad_producto = ?",(nombre_producto,cantidad_actual))
+            if not self.conexion.cursor.fetchone():
+                print("No se encontró el producto con ese nombre y cantidad actual.")
                 return
-            self.conexion.cursor.execute("UPDATE productos SET cantidad_producto = ? WHERE cantidad_producto = ?",(cantidad_producto,cantidad_actual))
+            
+            self.conexion.cursor.execute("UPDATE productos SET cantidad_producto = ? WHERE nombre_producto = ? AND cantidad_producto = ?",(cantidad_producto,nombre_producto,cantidad_actual))
             if self.conexion.cursor.rowcount == 0:
                 print("No se encontro la cantidad del producto actual.")
                 return
             else:
                 self.conexion.conn.commit()
                 print("Cantidad del producto modificada exitosamente.")
+
         except Exception as error:
             print(f"Error en el programa : {error}.")
         except sqlite3.Error as error:
@@ -99,27 +107,94 @@ class CambiosElementos:
     
     def modificar_proovedor(self):
         try:
+
+            nombre_producto = str(input("Ingresa el nombre del producto : ")).strip()
             proovedor_actual = str(input("Ingresa el nombre del proovedor ingresada preeviamente: ")).strip()
             nombre_proovedor = str(input("Ingresa el nombre del proovedor: ")).strip()
-            if not proovedor_actual or not nombre_proovedor:
+
+            if not all([nombre_producto,proovedor_actual,nombre_proovedor]):
                 print("Los campos deben estar completos.")
                 return
-            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_proovedor = ?",(nombre_proovedor,))
-            if self.conexion.cursor.fetchone():
-                print("El nombre del proovedor ya existe en el campo seleccionado. Por favor, ingresar uno diferente.")
+            
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ? AND nombre_proovedor = ?",(nombre_producto,proovedor_actual))
+            if not self.conexion.cursor.fetchone():
+                print("No se encontró el producto con ese nombre y el proovedor actual.")
                 return
-            self.conexion.cursor.execute("UPDATE productos SET nombre_proovedor = ? WHERE nombre_proovedor = ?",(nombre_proovedor,proovedor_actual))
+            
+            self.conexion.cursor.execute("UPDATE productos SET nombre_proovedor = ? WHERE nombre_producto = ? AND nombre_proovedor = ?",(nombre_proovedor,nombre_producto,proovedor_actual))
             if self.conexion.cursor.rowcount == 0:
                 print("No se encontro el nombre del proovedor.")
                 return
             else:
                 self.conexion.conn.commit()
                 print("Nombre del proovedor del producto modificado exitosamente.")
+
+        except Exception as error:
+            print(f"Error en el programa : {error}.")
+        except sqlite3.Error as error:
+            print(f"Error en la base de datos : {error}.")
+    
+    def modificar_monto(self):
+        try:
+
+            nombre_producto = str(input("Ingresa el nombre del producto : ")).strip()
+            monto_actual = float(input("Ingresa el monto actual de los productos: "))
+            precio_compra = float(input("Ingresa el precido del monto de los productos: "))
+
+            if not all([nombre_producto,monto_actual,precio_compra]):
+                print("Los campos deben estar completos.")
+                return
+            
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ? AND precio_compra = ?",(nombre_producto,monto_actual))
+            if not self.conexion.cursor.fetchone():
+                print("No se encontró el producto con ese nombre y el monto actual.")
+                return
+            
+            self.conexion.cursor.execute("UPDATE productos SET precio_compra = ? WHERE nombre_producto = ? AND precio_compra = ?",(precio_compra,nombre_producto,monto_actual))
+            if self.conexion.cursor.rowcount == 0:
+                print("No se encontro el monto del productos seleccionados.")
+            else:
+                self.conexion.conn.commit()
+                print("Monto total de los productos actualizado exitosamente.")
+
+        except Exception as error:
+            print(f"Error en el programa : {error}.")
+        except sqlite3.Error as error:
+            print(f"Error en la base de datos : {error}.")
+    
+    def modificar_fecha(self):
+        try:
+
+            nombre_producto = str(input("Ingresa el nombre del producto : ")).strip()
+            fecha_actual = str(input("Ingresa la fecha actual de los productos: ")).strip()
+            fecha_ingreso = str(input("Ingresa la fecha de ingreso de los productos: ")).strip()
+
+            if not all([nombre_producto,fecha_actual,fecha_ingreso]):
+                print("Los campos deben estar completos.")
+                return
+            try:
+                datetime.strptime(fecha_ingreso, "%d/%m/%Y")
+            except ValueError:
+                print("La fecha no es valida, por favor ingresar nuevamente.")
+                return
+
+            self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ? AND fecha_ingreso = ?",(nombre_producto,fecha_actual))
+            if not self.conexion.cursor.fetchone():
+                print("No se encontró el producto con ese nombre y la fecha actual.")
+                return
+            
+            self.conexion.cursor.execute("UPDATE productos SET fecha_ingreso = ? WHERE nombre_producto = ? AND fecha_ingreso = ?",(fecha_ingreso,nombre_producto,fecha_actual))
+            if self.conexion.cursor.rowcount == 0:
+                print("No se encontro la fecha del producto seleccionado.")
+            else:
+                self.conexion.conn.commit()
+                print("Fecha de ingreso del producto actualizado exitosamente.")
+
         except Exception as error:
             print(f"Error en el programa : {error}.")
         except sqlite3.Error as error:
             print(f"Error en la base de datos : {error}.")
 
-    
-    
+    def salir_programa(self):
+        exit()
 

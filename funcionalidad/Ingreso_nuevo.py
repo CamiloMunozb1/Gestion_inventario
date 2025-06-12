@@ -25,7 +25,7 @@ class IngresoProductos:
 
             nombre_producto = str(input("Ingresa el nombre del producto: ")).strip()
             cantidad_producto = int(input("Ingresa la cantidad del producto: "))
-            nombre_proovedor = str(input("Ingresa el nombre del proovesor: ")).strip()
+            nombre_proovedor = str(input("Ingresa el nombre del proovedor: ")).strip()
             precio_compra = float(input("Ingresa el precio del monto de productos: "))
             fecha_ingreso = str(input("Ingresa la fecha de ingreso de los productos en formato (DD/MM/AAAA): ")).strip()
 
