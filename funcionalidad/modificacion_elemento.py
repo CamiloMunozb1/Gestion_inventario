@@ -11,7 +11,6 @@ class IngresoDB:
     
     def cierre_db(self):
         self.conn.close()
-        print("cierre de la base de datos exitoso.")
 
 class CambiosElementos:
     def __init__(self,conexion):

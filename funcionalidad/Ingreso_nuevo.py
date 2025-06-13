@@ -13,7 +13,7 @@ class IngresoDB:
     
     def cierre_db(self):
         self.conn.close()
-        print("Cierre de la base de datos exitoso.")
+
 
 
 class IngresoProductos:
