@@ -47,6 +47,12 @@ class IngresoProductos:
             if self.conexion.cursor.fetchone():
                 print("Ya se ingreso el nombre del producto, si es el mismo pero con caracteristicas diferentes especificar en el nombre.")
                 return
+            elif cantidad_producto <= 0:
+                print("La cantidad del lote del producto no puede ser igual o menos a 0.")
+                return
+            elif precio_compra <= 0:
+                print("El precio del lote del producto no puede ser menor o igual a 0.")
+                return
             # Ingreso de los datos ingresados por el usuario a la base de datos.
             self.conexion.cursor.execute("INSERT INTO productos(nombre_producto,cantidad_producto,nombre_proovedor,precio_compra,fecha_ingreso) VALUES (?,?,?,?,?)"
                                         ,(nombre_producto,cantidad_producto,nombre_proovedor,precio_compra,fecha_ingreso))
