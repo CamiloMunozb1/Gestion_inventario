@@ -25,7 +25,7 @@ class MostrarInventario:
                     nombre_proovedor,
                     precio_compra,
                     fecha_ingreso
-                FROM productos
+                FROM productos;
                 """
             resultado_df = pd.read_sql_query(query, self.conexion.conn)
             if not resultado_df.empty:

@@ -1,10 +1,14 @@
+# Modulos importados para el uso de las funcionalidades.
 from funcionalidad.Ingreso_nuevo import IngresoDB,IngresoProductos
 from funcionalidad.modificacion_elemento import IngresoDB,CambiosElementos
 from funcionalidad.vizualizar import IngresoDB,MostrarInventario
 from funcionalidad.eliminar_elemento import IngresoDB,EliminarElementos
 
+# Ruta hacia la base de datos.
 ruta_db = r"TU_BASE_DATOS"
+# Conexion hacia la base de datos.
 conexion = IngresoDB(ruta_db)
+
 
 while True:
     print("""
@@ -16,10 +20,13 @@ while True:
             5. Salir
         """)
     try:
+        # Opciones de usuario
         usuario = str(input("Ingresa la opcion que desees: ")).strip()
+        # Campo de verificacion.
         if not usuario:
             print("El campo debe estar completo.")
             break
+        # Opciones de usuario junto con los modulos de funcionamiento del sistema.
         elif usuario == "1":
             productos = IngresoProductos(conexion)
             productos.ingresos_productos()
@@ -40,6 +47,7 @@ while True:
 
         input("\nPresiona enter para continuar...")
     
+    # Manejo de errores.
     except ValueError:
         print("Error de digitacion, volver a intentar.")
     except Exception as error:
