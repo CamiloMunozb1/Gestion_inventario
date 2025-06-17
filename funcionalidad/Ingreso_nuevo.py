@@ -32,9 +32,17 @@ class IngresoProductos:
             precio_compra = float(input("Ingresa el precio del monto de productos: "))
             fecha_ingreso = str(input("Ingresa la fecha de ingreso de los productos en formato (DD/MM/AAAA): ")).strip()
 
+            # Se valida de que la cantidad del producto no sea menor o igual a 0.
+            if cantidad_producto <= 0:
+                print("La cantidad del lote del producto no puede ser igual o menos a 0.")
+                return
+            # Se valida que el precio del monto no sea menor o igual a 0.
+            elif precio_compra <= 0:
+                print("El precio del lote del producto no puede ser menor o igual a 0.")
+                return
             # Campo de validacion de datos.
-            if not all([nombre_producto,cantidad_producto,nombre_proovedor,precio_compra,fecha_ingreso]):
-                print("Todos los campos deben estar ingresados.")
+            elif not all([nombre_producto,cantidad_producto,nombre_proovedor,precio_compra,fecha_ingreso]):
+                print("Todos los campos deben estar completos.")
                 return
             try:
                 datetime.strptime(fecha_ingreso, "%d/%m/%Y") # Validacion de fecha con el formato requerido.
@@ -46,12 +54,6 @@ class IngresoProductos:
             self.conexion.cursor.execute("SELECT 1 FROM productos WHERE nombre_producto = ?",(nombre_producto,))
             if self.conexion.cursor.fetchone():
                 print("Ya se ingreso el nombre del producto, si es el mismo pero con caracteristicas diferentes especificar en el nombre.")
-                return
-            elif cantidad_producto <= 0:
-                print("La cantidad del lote del producto no puede ser igual o menos a 0.")
-                return
-            elif precio_compra <= 0:
-                print("El precio del lote del producto no puede ser menor o igual a 0.")
                 return
             # Ingreso de los datos ingresados por el usuario a la base de datos.
             self.conexion.cursor.execute("INSERT INTO productos(nombre_producto,cantidad_producto,nombre_proovedor,precio_compra,fecha_ingreso) VALUES (?,?,?,?,?)"
